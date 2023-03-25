@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <base href="Websiteattempt2">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elements</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="../js/styles/base16/atlas.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+   </head>
+  <body>
+    <!-- Navbar  -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark p-md-3">
+      <div class="container">
+        <a href="../index.html">
+        <img class="navbar-brand" id="Logo" height="30" src="../img/elementslogo3.webp">
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <div class="mx-auto"></div>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" id="navlink" href="../index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="navlink" href="projects.html">Projects</a>
+            <li class="nav-item">
+              <a class="nav-link" id="navlink" href="../about.html">About</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="bannerimg">
+        <img class="bannerimgg" src="../img/projectsgradientwordssmall.webp">
+
+    </div>
+
+    <div class="cardsblog">
+    <div class="cardblog">    
+        <div class="containterimgblog" id="cardimgblog">
+          <img src="../img/Screenshot 2022-08-15 104651.jpg" height="1000" width="1" alt="image">
+        </div>
+        <div class="detailsblog">
+        <h3>ESP-8266-01 Door sensor Simulator</h3>
+      <center><p>      
+           This little simulator was made to help illustrate the logic gate functions of the door sensor. the design of the circuit has changed since this simulator was made. 
+           <a href="ESPfull.html">original project article</a>
+        </p></center>
+           <center><iframe width="1154" height="721" src="https://www.youtube.com/embed/JxIkmSLTCy4" title="ESP logic simulator demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></center>
+          
+          <h3>Source Code</h3>
+          <center><p>NOTE: this must be copied into a ide like Visual Studio with the correct paths for the librarys in the includes and mosquitto software installed (written in C++)</p></center>
+          
+        </div>
+        <center><div class="simcoder">
+          <div class="simcoderhold">
+        <pre>
+          <code class="cpp">
+  
+  
+  #include &lt;iostream&gt;
+  #include &lt;iterator&gt;
+  #include &lt;set&gt;
+  #include &lt;windows.h&gt;
+  #include &lt;thread&gt;
+  #include &lt;chrono&gt;
+  #include &lt;process.h&gt;
+  
+  using namespace std;
+  
+  
+  /*VCC (battery)*/
+  int VCC = 0;
+  float VCC_V = 0.0f;
+  
+  int USB = 0;
+  
+  int sw;
+  
+  /*ESP-01*/
+  int ESP_VCC = 0;
+  int ESP_GPIO_0 = 0;
+  
+  /*INVERTER*/
+  int INV_A = USB;
+  int INV_Y = 0;
+  
+  int A1_A = INV_Y; /*and gate 1*/
+  int A1_B = VCC;
+  int A1_Y = 0;
+  
+  /*or gate*/
+  int OR_A = sw;
+  int OR_B = ESP_GPIO_0;
+  int OR_Y = 0;
+  
+  /*and gate 2*/
+  int A2_A = A1_Y;
+  int A2_B = OR_Y;
+  int A2_Y;
+  
+  /*Transistor or MOSFET*/
+  
+  /*REG*/
+  int REGIN = VCC;
+  int REGOUT = 0;
+  double REGOUT_VAL = 0.0;
+  
+  int why;
+  
+  int sw_on_tme;
+  
+  int success = 1;
+  
+  bool comp = false;
+  
+  float I = 0;
+  int DIODE_VAL = 0;
+  float OHM_AC;
+  
+  int MQTT = 0;
+  int mqttstart = 0;
+  /*strings*/
+  
+  string(VCCSTRINGINPUT) = "OFF";
+  string(REG_OUTPUT) = "0.0v";
+  string(VCCSTRING) = "DISCONNECTED";
+  string(USBSTRING) = "DISCONNECTED";
+  string(ESP_STATUS_POWER) = "null";
+  string(USB_POWER_STRING) = "OFF";
+  string(sw_string) = "OPEN";
+  string(ERROR_STRING) = "null";
+  string(DIODE_STAT) = "OFF";
+  string(MQTT_M) = "NULL";
+  string(ESP_BOOT_STAT) = "NULL";
+  string(ESP_WIFI_STAT) = "NULL";
+  
+  void Update() {
+    INV_A = USB;
+    A1_A = INV_Y;
+    A1_B = VCC;
+    OR_A = sw;
+    OR_B = ESP_GPIO_0;
+    A2_B = OR_Y;
+    A2_A = A1_Y;
+  }
+  
+  void Cout() {
+    std::cout &lt;&lt; R"(
+  _____________________________________________________________________________________________________________________________________________________________
+  |   USB
+  |  __|)" &lt;&lt; INV_A &lt;&lt; R"(__
+  |  \   / INV
+  |   \ /                AND GATE 1
+  |    |)" &lt;&lt; INV_Y &lt;&lt; R"(           )" &lt;&lt; A1_A &lt;&lt; R"( ____
+  |    |--------------|   \ _________________
+  |  |----------------|___/ )" &lt;&lt; A1_Y &lt;&lt; R"(                \
+  |  |              )" &lt;&lt; A1_B &lt;&lt; R"(                         \             AND GATE 2
+  | VCC                                        \        )" &lt;&lt; A2_A &lt;&lt; R"( ___
+  |                                             \--------|   \____________________
+  |                       -------------------------------|___/)" &lt;&lt; A2_Y &lt;&lt; R"(                   \       
+  |               OR GATE |                             )" &lt;&lt; A2_B &lt;&lt; R"(                          \      
+  |               )" &lt;&lt; OR_A &lt;&lt; R"( ____  |                                                         \     
+  |VCC------)" &lt;&lt; OR_A &lt;&lt; R"(-------\   \_| )" &lt;&lt; OR_Y &lt;&lt; R"(                                                        ---------|
+  |            |----/___/                                                                     |
+  |            |  )" &lt;&lt; OR_B &lt;&lt; R"(                                                                           |        
+  |            |______                           GND------------------------------|           |
+  |                   |                                                           |          | |  RESISTOR 300ohm
+  |                   |                                                            \|_       _|_  )" &lt;&lt; I &lt;&lt; R"(ohm out
+  |                   |            _______________________________________________ /|       _\_/_  DIODE )" &lt;&lt; DIODE_STAT &lt;&lt; R"(
+  |                   |            |                                                          |     
+  |                   |            |                                                         ===
+  |                   |        ____|______________________________                           GND
+  |                   |       |    / GND                          |                          
+  |                   |       |   +         +         +        +  |                         
+  |                   |       |                     GPIO_0        |     
+  |                   |       |   +         +         +        +  | 
+  |         ____)" &lt;&lt; REGOUT &lt;&lt; R"(     |_______|_______________________| )" &lt;&lt; ESP_GPIO_0 &lt;&lt; R"(     VCC |
+  |VCC-----|_____|----_______ | _______________________________|  |
+  |           |               |                                )" &lt;&lt; ESP_VCC &lt;&lt; R"(  |                  
+  |          ===              |              ESP-01               |           
+  |__________GND______________|___________________________________|__________________________________________________________________________________________________              
+  POWER STATUS
+  VCC = )" &lt;&lt; VCCSTRING &lt;&lt; R"(   VOLTAGE = )" &lt;&lt; VCC_V &lt;&lt; R"(v                                       )" &lt;&lt; ERROR_STRING &lt;&lt; R"(
+  USB = )" &lt;&lt; USBSTRING &lt;&lt; R"(                                                                       
+  REG OUTPUT = )" &lt;&lt; REGOUT_VAL &lt;&lt; R"(v
+  ESP POWER STATUS = )" &lt;&lt; ESP_STATUS_POWER &lt;&lt; R"( 
+  ESP BOOT STATUS = )" &lt;&lt; ESP_BOOT_STAT &lt;&lt; R"(
+  ESP WIFI STATUS = )" &lt;&lt; ESP_WIFI_STAT &lt;&lt; R"(
+  )" &lt;&lt; why &lt;&lt; R"(
+  MQTT 
+  )" &lt;&lt; MQTT_M &lt;&lt; R"(
+  )" &lt;&lt; '\n';
+  }
+  
+  void ifunctions_1() {
+    if (VCC == 1) {
+        if (sw == 1) { /*Switch True == switch closed aka providing power*/
+            OR_A = 1;
+            Update();
+        }
+        else {
+            OR_A = 0;
+            Update();
+        }
+    }
+  
+    /*INVERTER LOGIC*/
+    if (INV_A == 1) {
+        INV_Y = 0;
+        Update();
+    }
+    else
+    {
+        INV_Y = 1;
+        Update();
+    }
+  
+    /*OR GATE LOGIC*/
+    if (OR_A == 1 || OR_B == 1) {
+        OR_Y = 1;
+        Update();
+    }
+    else if (OR_A == !1 || OR_B == !1) {
+        OR_Y = 0;
+        Update();
+    }
+  
+    /*AND GATE 1 LOGIC*/
+    if (A1_A == 1 && A1_B == 1) {
+        A1_Y = 1;
+        Update();
+    }
+    else {
+        A1_Y = 0;
+        Update();
+    }
+  
+    /* AND GATE 2 LOGIC*/
+    if (A2_A == 1 && A2_B == 1) {
+        A2_Y = 1;
+        Update();
+    }
+    else {
+        A2_Y = 0;
+        Update();
+    }
+  
+  
+        I = VCC_V / 300 * 1000;
+  
+        if (I &gt;= 10 && A2_Y == 1) {
+            DIODE_STAT = "ON";
+            DIODE_VAL = 1;
+        }
+        else {
+            DIODE_STAT = "OFF";
+            DIODE_VAL = 0;
+        }
+  
+    
+  
+  
+        if (VCC_V &gt;= 3.3f) {
+            REGOUT_VAL = 3.3f;
+            REGOUT = 1;
+            ESP_VCC = 1;
+            Update();
+        }
+        else if (VCC_V &lt; 3.3f) {
+            REGOUT = 0;
+            REGOUT_VAL = 0.0f;
+            ERROR_STRING = "VCC VOLTAGE LOW";
+            Update();
+        }
+  
+    /*strings*/
+    if (VCC == 1) {
+        VCCSTRING = "CONNECTED";
+    }
+    else
+    {
+        VCCSTRING = "DISCONNECTED";
+    }
+  
+    if (USB == 1) {
+        USBSTRING = "CONNECTED";
+    }
+    else if (USB == 0)
+    {
+        USBSTRING = "DISCONNECTED";
+    }
+  
+    if (DIODE_VAL == 1 && REGOUT == 1) {
+        ESP_STATUS_POWER = "ON";
+        ESP_VCC = 1;
+        why = 1;
+        Update();
+    }
+    else {
+        ESP_STATUS_POWER = "OFF";
+        ESP_VCC = 0;
+    }
+  
+  }
+  
+  void strings() {
+    
+  }
+  
+  void SYSTEM_BOOT() {
+    Sleep(1000);
+    ESP_BOOT_STAT = "BOOT COMPLETE";
+  }
+  
+  void WIFI_START() {
+    Sleep(3000);
+    ESP_WIFI_STAT = "CONNECTED";
+  }
+  
+  void MQTT_START() {
+  
+    system("cd C:\\Program Files\\mosquitto && .\\mosquitto_pub -h 192.168.1.13 -p 1883 -t sensors/doors/front -m Open -q 1");
+    MQTT_M = "MESSAGE SENT";
+    MQTT = 1;
+  
+  }
+  
+  void delay() {
+    if (sw == 1 && VCC == 1) {
+        int delaytime = sw_on_tme * 1000;
+        cout &lt;&lt; delaytime &lt;&lt; endl;
+        cout &lt;&lt; flush;
+        Sleep(delaytime);
+        sw = 0;
+        Update();
+        strings();
+        ifunctions_1();
+        cout &lt;&lt; flush;
+        system("cls");
+        Cout();
+    }
+    else {
+        cout &lt;&lt; "this is why" &lt;&lt; endl;
+    }
+  }
+  
+  void ESP_functions() {
+    if (ESP_VCC == 1) {
+        SYSTEM_BOOT();
+        strings();
+        cout &lt;&lt; flush;
+        system("cls");
+        Cout();
+        ESP_GPIO_0 = 1;
+        strings();
+        Update();
+        cout &lt;&lt; flush;
+        system("cls");
+        Cout();
+        WIFI_START();
+        strings(); 
+        cout &lt;&lt; flush;
+        system("cls");
+        Cout();
+        MQTT_START();
+        strings();
+        cout &lt;&lt; flush;
+        system("cls");
+        Cout();
+    }
+  
+  }
+  
+  int main() {
+  
+    while (comp == false) {
+  
+        cout &lt;&lt; "VCC status: (on/off)" &lt;&lt; endl; cin &gt;&gt; VCCSTRINGINPUT; 
+        cout &lt;&lt; "BATTERY VOLTAGE:" &lt;&lt; endl; cin &gt;&gt; VCC_V;
+        cout &lt;&lt; "USB power status:(on/off)" &lt;&lt; endl; cin &gt;&gt; USB_POWER_STRING;
+        cout &lt;&lt; "Switch:(open/closed)" &lt;&lt; endl; cin &gt;&gt; sw_string; cout &lt;&lt; "Switch on time(seconds):" &lt;&lt; endl; cin &gt;&gt; sw_on_tme;
+  
+        strings();
+        /*convert string to int*/
+         /*process code*/
+        if (success == 1) {
+  
+            /*function ifs*/
+           
+            if (VCCSTRINGINPUT == "ON" || VCCSTRINGINPUT == "on") {
+                VCCSTRING = "CONNECTED";
+                VCC = 1;
+                Update();
+            }
+            else if (VCCSTRINGINPUT == "OFF" || VCCSTRINGINPUT == "off") {
+                VCCSTRING = "DISCONNECTED";
+                VCC = 0;
+                Update();
+            }
+            else {
+                cout &lt;&lt; "input error 'VCCSTRINGINPUT'" &lt;&lt; endl;
+                success = 0;
+            }
+  
+            if (USB_POWER_STRING == "ON" || USB_POWER_STRING == "on") {
+                USB_POWER_STRING = "CONNECTED";
+                USB = 1;
+                Update();
+            }
+            else if (USB_POWER_STRING == "OFF" || USB_POWER_STRING == "off") {
+                USB_POWER_STRING = "DISCONNECTED";
+                USB = 0;
+                Update();
+            }
+            else {
+                cout &lt;&lt; "input error 'USB_POWER_STRING'" &lt;&lt; endl;
+                success = 0;
+            }
+  
+            if (sw_string == "CLOSED" || sw_string == "closed" && VCC == 1) {
+                /*  VCCSTRING = "CONNECTED";*/
+                sw = 1;
+                Update();
+            }
+            else if (sw_string == "OPEN" || sw_string == "open") {
+                /*sw = "DISCONNECTED";*/
+                sw = 0;
+                Update();
+            }
+            else {
+                cout &lt;&lt; "input error 'sw_string'" &lt;&lt; endl;
+                success = 0;
+            }
+            ifunctions_1();
+  
+  
+            strings();
+  
+            Cout();
+            /*execute gpio on hold*/
+  
+  
+  
+            /*esp functions*/
+  
+            /*delay  function*/
+            
+            thread th1(delay);
+  
+            thread th2(ESP_functions);
+  
+            th1.join();
+            th2.join();
+            
+            if (MQTT == 1) {
+                ESP_GPIO_0 = 0;
+                Update();
+                ifunctions_1();
+                system("cls");
+                Cout();
+            }
+  
+  
+  
+        }
+        else {/*success == 0 aka code input fail*/
+            cout &lt;&lt; "inputs invalid restart program" &lt;&lt; endl;
+            comp = true;
+        }
+  
+        
+  
+        
+  
+        
+  
+  
+  
+  
+    }
+  
+  
+  
+    return 0;
+  }
+  
+  
+          </code>
+        </pre>
+        </div>
+        </div></center>
+    </div>
+    </div>
+
+    
+   
+
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript">
+      var nav = document.querySelector('nav');
+      var newImageUrl = Logo.src;
+
+      window.addEventListener('scroll', function () {
+        if (window.pageYOffset > 5) {
+          nav.classList.add('bg-dark', 'shadow');
+          newImageUrl = "../img/elementslogo4.webp"
+        } else {
+          nav.classList.remove('bg-dark', 'shadow');
+          newImageUrl = "../img/elementslogo3.webp"
+        }
+
+        Logo.src = newImageUrl;
+      });
+    </script>
+    <script src="../js/scroll.js"></script>
+  </body>
+</html>

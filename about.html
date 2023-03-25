@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elements - About</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="css/loader.css"/>
+    <script src="projects/js/warning.js"></script>
+    <script src="projects/js/fade.js"></script>
+
+    <style>
+      body {
+        background-image: url(img/vlpxl2x0qtp31.webp);
+        background-position: center;
+        background-size: 100%;
+        background-repeat: no-repeat;
+        overflow: hidden;
+      }
+
+      .github {
+        position: absolute;
+        padding-top: 1%;
+        z-index: 1;
+      }
+
+      .credly {
+        position: absolute;
+        padding-top: 155px;
+        z-index: 0;
+      }
+
+      .aboutlink {
+        text-decoration: none;
+        font-size: 16px;
+        color: white;
+        transition: all 1s ease-in-out;
+      }
+
+      .aboutlink:hover{
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+   <div id="overlay"></div>
+   <div id="loader"></div>
+
+
+    <!-- Navbar  -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark p-md-3">
+      <div class="container">
+        <a href="index.html">            
+        <img class="navbar-brand" id="Logo" height="30" src="img/elementslogo3.webp">
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <div class="mx-auto"></div>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" id="navlink" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="navlink" href="projects/projects.html">Projects</a>
+            <li class="nav-item">
+              <a class="nav-link" id="navlink" href="about.html">About</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Banner Image  -->
+    <div class="contents-aboutme">
+      <div class="aboutmecard">
+        <div class="aboutmeimage">
+          <img class="aboutmeimageimg" src="img/X0jMq7o4_2x.jpg">
+          <div class="contactinfo">
+            <a href="https://www.youtube.com/channel/UCXaLD4J-SHjP447i3mTbseQ" class="fa fa-youtube"></a>
+            <a href="https://twitter.com/Elements6007" class="fa fa-twitter"></a>
+            <a href="https://www.instagram.com/elements6007/" class="fa fa-instagram"></a>
+            <span title="Github">
+            <a href="https://github.com/Elements6007" class="fa fa-github"></a>
+            </span>
+            <span title="Elements6007@gmail.com">
+            <a href="#" class="fa fa-google" ></a>
+            </span>
+          </div>
+          <a class="github" href="https://github.com/Elements6007">
+            <img src="svg/githubstats.svg" style="width: 70%; height: 80%;">
+          </a>
+          <a class="credly" href="https://www.credly.com/badges/8ba5a78a-c825-40b8-96d1-5e590a1ce319/public_url">
+            <img src="img/networking-essentials.png" style="width: 40%; height: 40%;">
+          </a>          
+        </div>
+        <div class="detailz">
+          <h1>About Me</h1>
+          <p>Hello, I am John an amateur developer, mostly listed as 'Elements6007' on the web. I am passionate in embedded and low-level 
+            electronics and networking. My job experiance includes one season at Vail Resorts in mountain operations. 
+            My main launguages of development are C and C++.  I have contributed to the repository <a class="aboutlink"href="https://github.com/InfiniTimeOrg">InfiniTime</a>, which is open-source firmware 
+            for the <a class="aboutlink" href="https://www.pine64.org/pinetime/">PineTime Smartwatch</a>. I also have a Cisco Networking Essentials certificate(student level). I built this website from compelete scratch and host it on my network. 
+            Anyway if you would like to learn more, please check out my projects page.</p>
+        </div>
+      </div>
+    
+
+  </div>
+    <script src="css/bootstrap.min.css"></script>      
+  </body>
+</html>

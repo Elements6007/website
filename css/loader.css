@@ -1,0 +1,35 @@
+#overlay {
+    position: fixed;
+    /* Sit on top of the page content */
+    display: block;
+    /* Hidden by default */
+    width: 100%;
+    /* Full width (cover the whole page) */
+    height: 100%;
+    /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(78, 78, 78);
+    /* Black background with opacity */
+    z-index: 2;
+    /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer;
+    /* Add a pointer on hover */
+    align-items: center;
+}
+
+#loader {
+    border: 2px solid #f3f3f3;
+    display: block;
+    position: fixed;
+    border-radius: 50%;
+    border-top: 2px solid black;
+    width: 20px;
+    height: 20px;
+    -webkit-animation: spin 1s linear infinite;
+    /* Safari */
+    animation: spin 1s linear infinite;
+    z-index: 3;
+}

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <base href="Websiteattempt2">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elements</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="../js/styles/base16/atlas.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="js/fade.js"></script>
+
+   </head>
+  <body>
+    <!-- Navbar  -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark p-md-3">
+      <div class="container">
+        <a href="../index.html">
+        <img class="navbar-brand" id="Logo" height="30" src="../img/elementslogo3.webp">
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <div class="mx-auto"></div>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" id="navlink" href="../index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="navlink" href="projects.html">Projects</a>
+            <li class="nav-item">
+              <a class="nav-link" id="navlink" href="../about.html">About</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="bannerimg">
+        <img class="bannerimgg" src="../img/projectsgradientwordssmall.webp">
+    </div>
+
+    <div class="cardsblog">
+    <div class="cardblog">    
+        <div class="containterimgblog" id="cardimgblog">
+          <img src="../img/IMG_0549resize.jpg" alt="image">
+        </div>
+        <div class="detailsblog">
+          <h3>ESP-8266-01 Door sensor</h3>
+          <p>      
+            This project is a simple DIY Wi-Fi door sensor using an ESP-8266-01 Wi-Fi module. 
+            This device aims to be a simple versatile low power door sensor capable of being used for any application. 
+            The heart of this sensor is an ESP-8266-01 which is a very powerful wireless device. 
+            This chip, when activated, runs a simple program which sends a “Open” message to a MQTT broker which can be tied to Home Assistant to display and integrate. 
+            With features which include rechargeable batteries, ability to be used with Home Assistant, and flexibility to suit your application makes this a very appealing DIY project.
+            This device has four important aspects to it which include the ESP-01 program, circuit design, and MQTT broker on Home Assistant.     
+          </p>
+          <p>
+             The program which the ESP-01 uses is quite simple. When enabled and given power, the ESP boots and runs the program.
+             The program which is written in C++ first connects to an access point which runs in the void setup_wifi() function. 
+             To enter the SSID of the access point the const char* ssid = "SSID”; which the “SSID” part should be replaced with the SSID of the access point must be filled.
+              The field under the SSID char* is the place to enter the password for the access point which replaces the “password” in the parenthesis. 
+              After making a successful connection and receiving an IP address by DCHP server on the LAN, the ESP proceeds to calculate the current battery percentages and sends the “Open” message. This function runs inside of void reconnect(). 
+              For this to work, however, the following fields must be correctly configured. The ip address of the MQTT broker(same IP as the Home assistant server if using integration) must be assigned in the const char* mqtt_server = "IP address";.  
+              The field below this is the server port, this should be already set to 1883 which is the default listening port for the MQTT broker.
+              A login into the home assistant server is also required for this process. 
+              A in depth instruction on how to setup a user for the MQTT addon in home assistant can be found <a target="_blank" href="https://www.youtube.com/watch?v=dqTn-Gk4Qeo">here</a>. 
+              Using the login that was set in the initial configuration for the MQTT addon the required fields of const char *mqtt_user = "username"; and const char *mqtt_pass = "password"; can be filled. 
+              Finally, the *mqtt_client_name= “client_name”; and *mqtt_topic = "topic"; must have unique names and topics. Other fields on lines 17, 18, and 19 are for setting a static IP address. 
+              Doing this should make it notify faster by at most two seconds because it does not need to wait to receive an IP address from a DHCP server. Using a static IP, however, will require additional configuration in your home router settings. 
+              With the ESP connected to the network it sends the packet to the destination IP with the payload of “Open” and it also sends battery percentage information which can be learned in depth <a target="_blank" href="https://vankenobi.github.io/2021/07/03/esp8266-low-power-door-sensor-with-homeassistant-integration-en">here</a>.
+              After sending the messages it  proceeds to return to a deep sleep mode.
+            </p>
+            <p>
+              For the ESP to function properly it needs power. 
+              Because the ESP-01 draws around 70mAh of current when on it is necessary to only have it powered on when the door is open.
+              This is achieved by using a normally closed reed switch, which when the door is opened it will complete the circuit and power the ESP-01. 
+              If the ESP-01 were to stay on continuously it would quickly drain a 1000mAh battery in about 14 hours (<a href="../img/Screenshot 2022-08-14 222659.jpg">WIRE DIAGRAM</a>).
+              Although this works decently for certain applications, sometimes it might occur that the door is closed before the ESP can send the message. 
+              This can be fixed with a simple circuit which lets is stay powered on until it finishes sending. 
+              This circuit consists of an OR-gate and a AND-gate as shown below in the circuit diagram. </p>
+              <center><img src="../img/Screenshot 2022-08-13 223622.jpg" width="100%"> </center>
+              <p>
+              The first input of the AND gate is by the VCC which is the positive of the battery.
+              The OR gate inputs are fed by the reed switch and the RX pin of the ESP. 
+              The output of the OR gate is then fed into the second input of the AND gate.
+              This allows the ESP to stay powered because the when the reed switch is closed the OR gate's output becomes a 1 which is then fed into the AND gate which makes its input become a 1 also.
+              The AND gates output is connected to the enable pin of the ESP which allows it to power up. 
+              Now if the door were closed (causing the reed switch to open), the ESP would still stay on because at the beginning of the program the ESP sets the RX pin to HIGH. 
+              This makes the OR gate keep the output of 1 even after the reed switch opens. 
+              Because this concept is hard to explain with words a simulation of this is available which I made to help me visualize and find potential problems. 
+              A demo of this simulator can be found <a href="espsim.html">here</a>. The block diagram above shows the simple version of this circuit design.
+              The actual circuit design below shows extra components which include three resistors.
+              These resistors are required to prevent the inputs of the logic gates to float. 
+              Floating inputs create many problems and make the ESP malfunction; thus, these resistors are necessary.
+              Finally, and probably most importantly, the ESP needs ideally 3.3 volts to function, in actuality it can take a range from 2.7-3.8 volts.
+              The battery used for this project is a 3.7v 1000mAh LiPo battery. 
+              Although these battery's say “3.7v”, which is in the range of the accepted voltages, they can actually output around 4.2 volts at maximum charge which would fry the little ESP-01. 
+              This can be fixed with a simple 3.3v voltage regulator between the battery and the ESP's VCC. 
+              This simple design has many variants, the simplest version can be found <a href="../img/Screenshot 2022-08-23 104050.jpg">here</a> one with the complete circuit insert complete, and the final product complete with USB C charging, a feature not available on most WI-FI door sensors. 
+
+            </p>
+            <p>
+              With the client side of things setup, it is now time to turn attention to the server side. 
+              After setting up home assistant and the MQTT broker, it is necessary to enter entities for the door sensors. 
+              The following code can be entered into the configuration.yaml file in home assistant. </p>
+              <center>
+              <div class="codeholdesp">
+              <div class="codeholdespin">
+              <pre><code class="yaml">
+                binary_sensor:
+                - platform: mqtt
+                  state_topic: "sensor/front"
+                  name: "FrontDoor"
+                  device_class: door
+                  value_template: "{{ value_json.status }}"
+                  payload_on: "Open"
+                  off_delay: 10
+                  icon: mdi:door
+                  
+                - platform: mqtt
+                  state_topic: "sensor/side"
+                  name: "SideDoor"
+                  device_class: door
+                  value_template: "{{ value_json.status }}"
+                  payload_on: 'Open'
+                  off_delay: 10
+                  icon: mdi:door
+              </code></pre> 
+              </div>
+              </div>
+              </center>
+            <p>
+              the value_template is the 'Open' message sent from the ESP-01 and the off_delay: is how long until the sensor will show 'open'.
+              To do this you need to have the file editor addon which is available from the addons store. FYI the .yaml format is extremely picky about spacing, so be mindful of your spacing. 
+              If the battery percentages are desired, the following code must also be entered. 
+             </p>
+             <center>
+              <div class="codeholdesp">
+              <div class="codeholdespin">
+              <pre><code class="yaml">
+                sensor:
+                - platform: mqtt
+                  state_topic: "sensor/side"
+                  name: "Front Door Battery level"
+                  unit_of_measurement: "%"
+                  value_template: '{{ value_json.battery }}'
+                  icon: 'mdi:battery-high'
+                  
+                - platform: mqtt
+                  state_topic: "sensor/front"
+                  name: "Side Door Battery level"
+                  unit_of_measurement: "%"
+                  value_template: '{{ value_json.battery }}'
+                  icon: 'mdi:battery-high'
+              </code></pre> 
+              </div>
+              </div>
+              </center>
+              <p>
+              note that the client's name and topics of the sensors set here must match the set topic on the ESP. With this new code set make sure to save and restart the home assistant server.
+              Finally, to add the sensors to the lovelace dashboard just add a card and search for the current entity whose name should be the name you set in the config file. 
+            </p>
+            <p>
+              This completes the process and explains my whole four-month journey working on this project. 
+              Although this whole concept is really simple, I hope this article becomes useful to someone and helps them complete it with less problems than I. 
+              despite the many hours troubleshooting the smallest problems I learned a lot from this project and just wanted to share it with others. 
+              If you attempt to replicate this project and don't want to design your own PCB or anything you can use mine which is available <a href="resource.html">here</a>.
+              You can get this PCB manufactured by JLCPCB which also does board assembly which I highly encourage since the logic gates are almost impossible to solder by hand. 
+              If you do not want to go through the PCB manufacturer however, I will most likely have a fully soldered kit available for purchase on Ebay (link should be on projects page). 
+              Thank you if you have read this article to the end, I greatly appreciate you doing so and encourage you to do this project. 
+              If you encounter any problems you can reach out to me by my contact info available on my about page.
+            </p>
+
+            <h3>SOURCE CODE</h3>
+           <center> <p><a href="resource.html">Link to Github</a></p> </center>
+        </div>
+    </div>
+    </div>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="js/scroll.js"></script>
+  </body>
+</html>

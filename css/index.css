@@ -1,0 +1,40 @@
+.banner-image>img {
+    position: absolute;
+    width: 110%;
+}
+
+.content {
+    position: absolute;
+}
+
+#one {
+    padding-bottom: 3%;
+    width: 110%;
+}
+
+#two {
+    width: 120%;
+    position: absolute;
+    animation-fill-mode: forwards;
+}
+
+#three {
+    width: 120%;
+    position: absolute;
+    animation-fill-mode: forwards;
+
+    rotate: 10deg;
+    padding-bottom: 6%;
+}
+
+#four {
+    padding-bottom: 8%;
+    animation-fill-mode: forwards;
+
+}
+
+
+#five {
+    width: 120%;
+    padding-bottom: 30%;
+}

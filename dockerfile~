@@ -1,0 +1,22 @@
+
+
+
+FROM nginx:alpine
+#RUN apk update \
+#    && apk upgrade \
+#    && apk add nginx \
+#    && rm -rf /var/cache/apk/*
+
+ 
+#RUN mkdir /usr/share/nginx/html
+COPY . /usr/share/nginx/html
+
+
+
+
+
+#CMD ["nginx", "-g", "daemon off;"]
+
+
+#FROM hypriot/rpi-alpine-scratch
+#COPY . /usn/share/nginx/html

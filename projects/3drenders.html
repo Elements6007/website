@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <base href="Websiteattempt2">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elements</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="/path/to/styles/default.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/languages/vbscript-html.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+   </head>
+  <body>
+    <!-- Navbar  -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark p-md-3">
+      <div class="container">
+        <a href="../index.html">
+        <img class="navbar-brand" id="Logo" height="30" src="../img/elementslogo3.webp">
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <div class="mx-auto"></div>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" id="navlink" href="../index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="navlink" href="projects.html">Projects</a>
+            <li class="nav-item">
+              <a class="nav-link" id="navlink" href="../about.html">About</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="bannerimg">
+        <img class="bannerimgg" src="../img/3dr.jpg">
+
+    </div>
+
+<div class="drenders">
+    <center>
+    <img src="../img/macinkitchentestrender.png">
+    
+    <img src="../img/macbookrender5.png">
+    <img src="../img/kitchen FINAL3.png">
+    <img src="../img/kitchen (done 1).png">
+    </center>
+    
+    
+</div>
+
+
+   
+
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript">
+      var nav = document.querySelector('nav');
+      var newImageUrl = Logo.src;
+
+      window.addEventListener('scroll', function () {
+        if (window.pageYOffset > 5) {
+          nav.classList.add('bg-dark', 'shadow');
+          newImageUrl = "../img/elementslogo4.webp"
+        } else {
+          nav.classList.remove('bg-dark', 'shadow');
+          newImageUrl = "../img/elementslogo3.webp"
+        }
+
+        Logo.src = newImageUrl;
+      });
+    </script>
+    <script src="../js/scroll.js"></script>
+  </body>
+</html>
